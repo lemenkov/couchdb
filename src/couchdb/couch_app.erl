@@ -37,7 +37,17 @@ get_ini_files(Default) ->
     {ok, [[]]} ->
         Default;
     {ok, [Values]} ->
-        Values
+        lists:foldl(
+		fun (V, AccIn) ->
+			  case file:read_file_info(V) of
+				  {ok, #file_info{type = regular}} -> AccIn ++ [V];
+				  {ok, #file_info{type = directory}} -> AccIn ++ filelib:wildcard(V ++ "/*.ini");
+				  _ -> AccIn
+			  end
+		end,
+		[],
+		Values
+	)
     end.
 
 start_apps([]) ->
