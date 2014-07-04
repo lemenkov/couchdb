@@ -15,6 +15,7 @@
 -behaviour(application).
 
 -include("couch_db.hrl").
+-include_lib("kernel/include/file.hrl").
 
 -export([start/2, stop/1]).
 
